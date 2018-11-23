@@ -20,9 +20,19 @@ module.exports = {
 						'@babel/preset-env'
 					],
 					plugins: [
-						['transform-react-jsx', { pragma: 'h' }]
+						['transform-react-jsx', { pragma: 'h' }],
+						"@babel/plugin-syntax-dynamic-import"
 					]
 				}
+			},
+
+			{
+				test: /\.scss$/,
+				use: [
+					"style-loader", // creates style nodes from JS strings
+					"css-loader", // translates CSS into CommonJS
+					"sass-loader" // compiles Sass to CSS, using Node Sass by default
+				]
 			}
 		]
 	},
