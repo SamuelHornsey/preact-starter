@@ -1,0 +1,24 @@
+{
+  "name": "preact-app",
+  "version": "1.0.0",
+  "description": "Minimal preact configuration",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "start": "webpack-dev-server --mode=development"
+  },
+  "author": "Samuel Hornsey (SH)",
+  "license": "MIT",
+  "dependencies": {
+    "preact": "^8.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}
