@@ -1,53 +1,66 @@
-const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path");
+
+const devMode = process.env.NODE_ENV === 'production'
 
 module.exports = {
-	// entry file - starting point for the app
-	entry: './src',
+  // entry file - starting point for the app
+  entry: "./src/index.js",
 
-	// where to dump the output of a production build
-	output: {
-		path: path.join(__dirname, 'dist'),
-		filename: 'bundle.js'
-	},
+  // where to dump the output of a production build
+  output: {
+    path: path.join(__dirname, "dist"),
+    filename: devMode ? "bundle.js" : "bundle.[hash].js"
+  },
 
-	module: {
-		rules: [
-			{
-				test: /\.jsx?/i,
-				loader: 'babel-loader',
-				options: {
-					presets: [
-						'@babel/preset-env'
-					],
-					plugins: [
-						['transform-react-jsx', { pragma: 'h' }],
-						"@babel/plugin-syntax-dynamic-import"
-					]
-				}
-			},
+  module: {
+    rules: [
+      {
+        test: /\.jsx?/i,
+        loader: "babel-loader",
+      },
 
-			{
-				test: /\.scss$/,
-				use: [
-					"style-loader", // creates style nodes from JS strings
-					"css-loader", // translates CSS into CommonJS
-					"sass-loader" // compiles Sass to CSS, using Node Sass by default
-				]
-			}
-		]
-	},
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: "css-loader",
+            options: { minimize: true }
+          },
+          {
+            loader: "sass-loader"
+          }
+        ]
+      }
+    ]
+  },
 
-	// enable Source Maps
-	devtool: 'source-map',
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
 
-	devServer: {
-		// serve up any static files from src/
-		contentBase: path.join(__dirname, 'src'),
+    new MiniCssExtractPlugin({
+      filename: devMode ? "main.css" : "main.[hash].css",
+      chunkFilename: devMode ? "main.[id].css" : "main.[id].[hash].css"
+    }),
+  ],
 
-		// enable gzip compression:
-		compress: true,
+  // enable Source Maps
+  devtool: "source-map",
 
-		// enable pushState() routing, as used by preact-router et al:
-		historyApiFallback: true
-	}
+  devServer: {
+    // serve up any static files from src/
+    contentBase: path.join(__dirname, "src"),
+
+    // enable gzip compression:
+    compress: true,
+
+    // enable pushState() routing, as used by preact-router et al:
+    historyApiFallback: true
+  }
 };
